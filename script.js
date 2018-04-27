@@ -1,6 +1,9 @@
 ;(function(global){
   'use strict';
 
+  var gtrollerUrl = 'https://caricati.github.io/gtroller/?q=';
+  var googleUrlSearch = 'https://www.google.com/search?q=';
+  var inputPlaceholter = 'Insert your search troll here';
   var delayWrite = 100;
   var delayCursor = 1400;
 
@@ -52,7 +55,19 @@
   }
 
   function decodeSeachText(text) {
-    return text ? text.replace(/\+/g, ' ') : null;
+    return text ? decodeURIComponent(text.replace(/\+/g, ' ')) : null;
+  }
+
+  function hide(el) {
+    el.classList.add('hide');
+  }
+
+  function hardHide(el) {
+    el.style.display = 'none';
+  }
+
+  function unhide(el) {
+    el.classList.remove('hide');
   }
 
   global.addEventListener('load', function(){
@@ -62,9 +77,13 @@
     var button = document.getElementById('search-button');
     var trollFace = document.getElementById('troll-face');
     var lockScreen = document.getElementById('lock-screen');
+    var feelingLuckyButton = document.getElementById('feeling-lucky-button');
+    var createTrollButton = document.getElementById('create-troll-button');
 
     var pureSearch = getSearchText(location.search);
     var trollText = decodeSeachText(pureSearch);
+
+    var copiedLinkCounter = 0;
 
     function goToInputText(done) {
       console.log('1. go to input text.');
@@ -75,7 +94,7 @@
 
     function writeOnTextInput(done) {
       console.log('2. write on the input text.');
-      cursor.classList.add('hide');
+      hide(cursor);
       inputText.focus();
       writeInInput(inputText, trollText, function(){
         setTimeout(done, 1000);
@@ -86,7 +105,7 @@
       console.log('3. go to search button.');
       var pos = getPosition(button);
       inputText.blur();
-      cursor.classList.remove('hide');
+      unhide(cursor);
 
       setElementPosition(cursor, pos);
       
@@ -101,16 +120,43 @@
       console.log('4. show troll face ;)');
       lockScreen.classList.add('opacity');
       trollFace.classList.add('animate');
-      setTimeout(done, 4000)
+      setTimeout(done, 3000)
     }
 
     function redirectToGoogle(search) {
       console.log('5. Done! Do something.');
-      window.location.href = 'https://www.google.com/search?q=' + pureSearch;
+      window.location.href = googleUrlSearch + pureSearch;
     }
 
-    if(trollText) {
-      console.log(trollText);
+    function clickCreateTrollText() {
+      if (!inputText.value || inputText.value.indexOf(gtrollerUrl) > -1) {
+        return;
+      }
+
+      var copiedText = 'Copied link!'
+      if (copiedLinkCounter) copiedText = copiedText + ' (' + copiedLinkCounter + ')';
+
+      copiedLinkCounter++;
+      inputText.value = gtrollerUrl + inputText.value;
+      inputText.select();
+      document.execCommand("Copy");
+      createTrollButton.innerHTML = copiedText;
+    }
+
+    function prepareCreateTroll() {
+      hardHide(feelingLuckyButton);
+      hardHide(button);
+      hardHide(trollFace);
+      hardHide(lockScreen);
+      hardHide(cursor);
+
+      inputText.placeholder = inputPlaceholter;
+      createTrollButton.addEventListener('click', clickCreateTrollText);
+    }
+
+    function prepareTroller() {
+      hardHide(createTrollButton);
+
       asyncSequence([
         goToInputText,
         writeOnTextInput,
@@ -118,5 +164,7 @@
         showTrollFace,
       ])(redirectToGoogle);
     }
+
+    trollText ? prepareTroller() : prepareCreateTroll();
   });
 }(window));
