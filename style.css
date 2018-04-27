@@ -1,0 +1,134 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: arial,sans-serif;
+}
+
+#lock-screen {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+#lock-screen.animate {
+}
+
+@keyframes bg {
+  0%   { background: rgb(255,0,0, .8); }
+  30% { background: rgb(0,255,0, .8); }
+  100% { background: rgb(0, 0, 255, .8); }
+}
+
+.hide {
+  visibility: hidden;
+}
+
+#troll-face {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1s;
+
+  animation: bg 1s infinite alternate-reverse linear;
+}
+
+#troll-face.animate {
+  opacity: 1;
+}
+
+#troll-face img {
+  width: 10px;
+  transition: transform 1s, width 1s;
+}
+
+#troll-face.animate img {
+  width: 400px;
+  transform: rotate(360deg);
+}
+
+#arrow-mouse {
+  position: absolute;
+  top: 0; left: 0;
+  transition: top 1.4s, left 1.4s;
+}
+
+#arrow-mouse img {
+  width: 20px;
+}
+
+#wrapper {
+  max-width: 528px;
+  text-align: center;
+  margin: 190px auto 0;
+}
+
+#wrapper figure {
+  display: block;
+  padding: 0;
+  margin: 0 0 20px;
+  margin-bottom: 20px;
+}
+
+#wrapper form {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+#wrapper form input[type="text"] {
+  width: 100%;
+  line-height: 44px;
+  height: 44px;
+  font: 16px arial, sans-serif;
+  margin-bottom: 18px;
+  padding: 0 40px 0 18px;
+  outline: none;
+  box-sizing: border-box;
+  vertical-align: top;
+  background: url('mic.png') no-repeat #FFF;
+  background-position: calc(100% - 20px) 10px;
+  background-size: 23px;
+
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition-property: box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: initial;
+}
+
+#wrapper form button {
+  min-width: 54px;
+  height: 36px;
+  line-height: 27px;
+  color: #757575;
+  text-align: center;
+  font: bold 13px arial,sans-serif;
+  cursor: default;
+  margin: 11px 4px;
+  padding: 0 16px;
+  outline: none;
+  background-color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+  border-radius: 2px;
+}
+
+#wrapper form button.active-focus {
+  color: #222;
+  border: 1px solid #c6c6c6;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+
